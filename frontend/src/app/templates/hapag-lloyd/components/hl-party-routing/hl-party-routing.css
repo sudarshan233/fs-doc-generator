@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.border-thickness {
+  border-width: 0.25pt;
+}
