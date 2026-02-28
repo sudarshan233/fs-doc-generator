@@ -1,14 +1,207 @@
-<div class="hl-workspace bg-slate-200">
-  <div class="hl-scroll">
-    <article class="hl-page">
-        <app-hl-header></app-hl-header> 
-        <app-hl-party-routing></app-hl-party-routing>
-        <app-hl-cargo-table></app-hl-cargo-table>
-        <app-hl-footer></app-hl-footer>
-    </article>
+<div class="hl-bol">
+  <div class="hl-watermark-wrapper">
+    <div class="hl-watermark hl-watermark-left">
+      <span>Sea Waybill - Not Negotiable</span>
+    </div>
+    <div class="hl-watermark hl-watermark-right">
+      <span>Sea Waybill - Not Negotiable</span>
+    </div>
 
-    <article class="hl-page">
-      <app-hl-continuation></app-hl-continuation>
-    </article>
+    <div class="hl-content">
+      <div class="hl-header">
+        <div class="hl-header-meta">
+          Carrier: <span class="hl-header-value">{{ data.carrier }}</span>
+        </div>
+        <h1>{{ data.documentType }}</h1>
+        <div class="hl-header-meta">{{ data.documentSubtype }}</div>
+      </div>
+
+      <div class="hl-grid-two">
+        <app-hl-label-cell label="Shipper:" class="">
+          <p class="hl-strong">{{ data.shipper.name }}</p>
+          @for (line of data.shipper.address; track $index) {
+            <p>{{ line }}</p>
+          }
+        </app-hl-label-cell>
+
+        <div class="hl-top-right">
+          <div class="hl-logo-box">
+            <img [src]="logoPath" alt="Hapag-Lloyd Logo" />
+          </div>
+          <div class="hl-grid-three">
+            <app-hl-label-cell label="Carrier's Reference:">
+              {{ data.carriersReference }}
+            </app-hl-label-cell>
+            <app-hl-label-cell label="SWB-No.:">
+              {{ data.swbNo }}
+            </app-hl-label-cell>
+            <app-hl-label-cell label="Page:">
+              {{ data.page }}
+            </app-hl-label-cell>
+          </div>
+          <app-hl-label-cell label="Export References:"></app-hl-label-cell>
+          <app-hl-label-cell label="Forwarding Agent:"></app-hl-label-cell>
+        </div>
+      </div>
+
+      <div class="hl-grid-two">
+        <app-hl-label-cell label="Consignee:">
+          <p class="hl-strong">{{ data.consignee.name }}</p>
+          @for (line of data.consignee.address; track $index) {
+            <p>{{ line }}</p>
+          }
+        </app-hl-label-cell>
+        <app-hl-label-cell label="Consignee's Reference:"></app-hl-label-cell>
+      </div>
+
+      <div class="hl-grid-two">
+        <app-hl-label-cell label="Notify Address (Carrier not responsible for failure to notify):">
+          <p class="hl-strong">{{ data.notifyAddress.name }}</p>
+          @for (line of data.notifyAddress.address; track $index) {
+            <p>{{ line }}</p>
+          }
+        </app-hl-label-cell>
+        <app-hl-label-cell label="Place of Receipt:"></app-hl-label-cell>
+      </div>
+
+      <div class="hl-grid-two hl-grid-voyage-delivery">
+        <div class="hl-grid-two">
+          <app-hl-label-cell label="Vessel(s):">
+            @for (vessel of data.vessels; track $index) {
+              <p class="hl-strong">{{ vessel }}</p>
+            }
+          </app-hl-label-cell>
+          <app-hl-label-cell label="Voyage-No.:">
+            <span class="hl-strong">{{ data.voyageNo }}</span>
+          </app-hl-label-cell>
+        </div>
+        <app-hl-label-cell label="Place of Delivery:">
+          {{ data.placeOfDelivery }}
+        </app-hl-label-cell>
+      </div>
+
+      <div class="hl-grid-two">
+        <app-hl-label-cell label="Port of Loading:">
+          <span class="hl-strong">{{ data.portOfLoading }}</span>
+        </app-hl-label-cell>
+        <div class="hl-empty-cell"></div>
+      </div>
+
+      <div class="hl-grid-two">
+        <app-hl-label-cell label="Port of Discharge:">
+          <span class="hl-strong">{{ data.portOfDischarge }}</span>
+        </app-hl-label-cell>
+        <div class="hl-empty-cell"></div>
+      </div>
+
+      <div class="hl-cargo-header">
+        <div>Container Nos., Seal Nos.; Marks and Nos.</div>
+        <div>Number and Kind of Packages, Description of Goods</div>
+        <div>Gross Weight:</div>
+        <div>Measurement:</div>
+      </div>
+
+      @for (container of data.containers; track $index) {
+        <div class="hl-cargo-row">
+          <div class="hl-cargo-cell">
+            <p class="hl-strong">{{ container.containerNo }}</p>
+            <p>SEAL:</p>
+            <p>{{ container.sealNo }}</p>
+            <p>MARKS &amp; NOS:</p>
+            <p>{{ container.marksAndNos }}</p>
+            <p>SEAL NO: {{ container.sealNo }}</p>
+            <p class="hl-top-gap">H.S. CODE NO.: {{ data.additionalInfo.hsCode }}</p>
+            <p>DATE: {{ data.additionalInfo.date }}</p>
+          </div>
+          <div class="hl-cargo-cell">
+            @for (pkg of container.packages; track $index) {
+              <p>{{ pkg }}</p>
+            }
+            <p class="hl-mini-gap">H.S. CODE NO.: {{ data.additionalInfo.hsCode }}</p>
+            <p>S/BILL NO.: {{ data.additionalInfo.sBillNo }}</p>
+            <p>DATE: {{ data.additionalInfo.date }}</p>
+            <p>NT WT : {{ data.additionalInfo.netWeight }}</p>
+            <p>HUMIDITY: {{ data.additionalInfo.humidity }}</p>
+            <p>VENTILATION: {{ data.additionalInfo.ventilation }}</p>
+            <p class="hl-mini-gap hl-strong">{{ data.additionalInfo.freightTerms }}</p>
+            <p>{{ data.additionalInfo.freeTimeDetention }}</p>
+            <p>{{ data.additionalInfo.originAddress }}</p>
+          </div>
+          <div class="hl-cargo-cell hl-cargo-weight">
+            <p class="hl-strong">{{ container.grossWeight }}</p>
+          </div>
+          <div class="hl-cargo-cell hl-cargo-measurement"></div>
+        </div>
+      }
+
+      <div class="hl-note-box">
+        <p>TEMPERATURE TO BE SET AT {{ data.additionalInfo.temperature }}</p>
+        <p class="hl-mini-gap">*{{ data.additionalInfo.slacNote }}</p>
+        <p class="hl-mini-gap hl-strong">
+          SHIPPED ON BOARD, DATE: {{ data.additionalInfo.shippedOnBoardDate }}
+        </p>
+        <p>PORT OF LOADING: {{ data.portOfLoading }}</p>
+        <p>VESSEL NAME: {{ data.vessels[0] }} VOYAGE: {{ data.voyageNo }}</p>
+      </div>
+
+      <div class="hl-grid-two hl-grid-bottom-section">
+        <div>
+          <div class="hl-grid-two">
+            <app-hl-label-cell label="Total No. of Containers received by the Carrier:">
+              <span class="hl-total-containers">{{ data.totalContainers }}</span>
+            </app-hl-label-cell>
+            <app-hl-label-cell label="Packages received by the Carrier:"></app-hl-label-cell>
+          </div>
+
+          <app-hl-label-cell label="Movement:">
+            <span class="hl-strong">{{ data.movement }}</span>
+          </app-hl-label-cell>
+
+          <div class="hl-freight-box">
+            <p class="hl-muted">Freight Charges:</p>
+            <p>PORT CHARGE ORIGIN: <span class="hl-strong">{{ data.freightCharges.portChargeOrigin }}</span></p>
+            <p>SEAFREIGHT + ADDITIONALS: <span class="hl-strong">{{ data.freightCharges.seafreight }}</span></p>
+            <p>
+              PORT CHARGE DESTINATION:
+              <span class="hl-strong">{{ data.freightCharges.portChargeDestination }}</span>
+            </p>
+          </div>
+
+          <div class="hl-grid-three">
+            <app-hl-label-cell label="Total Freight Prepaid"></app-hl-label-cell>
+            <app-hl-label-cell label="Total Freight Collect"></app-hl-label-cell>
+            <app-hl-label-cell label="Total Freight"></app-hl-label-cell>
+          </div>
+        </div>
+
+        <div>
+          <div class="hl-terms-box">
+            RECEIVED by the Carrier from the Shipper in apparent good order and condition (unless otherwise
+            noted herein) the total number or quantity of Containers or other packages or units indicated in
+            the box opposite entitled "Total No. of Containers/ Packages received by the Carrier" for
+            Carriage subject to all the terms and conditions hereof (INCLUDING THE TERMS AND CONDITIONS ON
+            THE REVERSE HEREOF AND THE TERMS AND CONDITIONS OF THE CARRIER'S APPLICABLE TARIFF) from the
+            Place of Receipt or the Port of Loading, whichever is applicable, to the Port of Discharge or the
+            Place of Delivery, whichever is applicable.
+          </div>
+
+          <app-hl-label-cell label="Place and date of issue:">
+            <div class="hl-inline-issue">
+              <span class="hl-strong">{{ data.placeAndDateOfIssue.place }}</span>
+              <span class="hl-strong">{{ data.placeAndDateOfIssue.date }}</span>
+            </div>
+          </app-hl-label-cell>
+
+          <app-hl-label-cell label="Freight payable at:">
+            <span class="hl-strong">{{ data.freightPayableAt }}</span>
+          </app-hl-label-cell>
+
+          <div class="hl-agent-box">
+            <p class="hl-muted">FOR ABOVE NAMED CARRIER</p>
+            <p class="hl-agent-name">{{ data.agentName }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

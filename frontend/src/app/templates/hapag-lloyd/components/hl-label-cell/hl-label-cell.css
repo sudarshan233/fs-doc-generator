@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  border: 1px solid hsl(var(--doc-border));
+  border-top: 0;
+  background: hsl(var(--doc-cell-bg));
+}
+
+.hl-label-cell {
+  padding: 6px;
+  min-height: 62px;
+}
+
+.hl-label {
+  display: block;
+  font-size: 10px;
+  color: hsl(var(--doc-label));
+}
+
+.hl-value {
+  margin-top: 2px;
+  font-size: 12px;
+  color: hsl(var(--doc-value));
+  white-space: pre-line;
+}
+
+.hl-value:empty {
+  margin-top: 0;
+}
