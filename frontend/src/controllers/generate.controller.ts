@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 export const generateDoc = (req: Request, res: Response) => {
   const { documentTo } = req.query;
-  const { _id, shipment_id, hbl_number, hbl } = req.body;
+  console.log("Request Body: ", req.body)
   // Validate the input
   if (!documentTo) {
     return res.status(400).json({ 
