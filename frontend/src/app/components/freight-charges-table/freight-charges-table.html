@@ -1,6 +1,9 @@
 <section class="mt-6 w-full text-[#1d1d1d]">
   <div class="border-t border-x border-slate-300 bg-slate-200 px-3 py-1 text-left text-sm font-bold text-gray-600">
     Freight and Charges
+    @if (hbl?.freight_details?.freight_status) {
+      <span class="font-normal ml-2">({{ hbl?.freight_details?.freight_status }})</span>
+    }
   </div>
 
   <div class="overflow-x-auto">
@@ -43,11 +46,22 @@
             Equipment
           </td>
           <td class="border-r border-slate-300 px-3 py-2 text-right tabular-nums">
-            7,720.00
+            {{ hbl?.freight_details?.port_charges?.origin ?? '—' }}
           </td>
           <td class="px-3 py-2 text-center">
-            INR
+            —
           </td>
+        </tr>
+        <tr class="border-b border-slate-300">
+          <td class="border-r border-slate-300 px-3 py-2">
+            Port charges at destination
+          </td>
+          <td class="border-r border-slate-300 px-3 py-2 text-center">—</td>
+          <td class="border-r border-slate-300 px-3 py-2 text-center">—</td>
+          <td class="border-r border-slate-300 px-3 py-2 text-right tabular-nums">
+            {{ hbl?.freight_details?.port_charges?.destination ?? '—' }}
+          </td>
+          <td class="px-3 py-2 text-center">—</td>
         </tr>
         <tr class="border-b border-slate-300 text-[0.7rem] text-gray-500">
           <td class="border-r border-slate-300 px-3 py-1 pl-6">

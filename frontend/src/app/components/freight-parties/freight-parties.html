@@ -1,8 +1,8 @@
 <section class="flex flex-col">
-    <span class="text-xs font-bold text-gray-600">Shipper:</span>
-    <p class="text-sm">
-        SLV EXPORTS AND IMPORTS PRIVATE LIMITED
-        PLOT NO. S2, SURVEY NO. 1050 UNIT NO. 810 & 811, KUKATPALLY, JNTU ROAD
-        TELANGANA STATE, INDIA 
-    </p>
+  <span class="text-xs font-bold text-gray-600">{{ label || 'Party' }}</span>
+  @if (partyText) {
+    <p class="text-sm whitespace-pre-line">{{ partyText }}</p>
+  } @else {
+    <p class="text-sm text-gray-400">—</p>
+  }
 </section>

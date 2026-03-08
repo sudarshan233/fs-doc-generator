@@ -5,25 +5,25 @@
 
   <app-freight-detail
     label="Container Nos."
-    value="FSCU8655688/MOL T99378N"
+    [value]="containerNos"
   ></app-freight-detail>
 
   <app-freight-detail
     label="Type of Service"
-    value="CY/CY"
+    [value]="hbl?.movement_type ?? '—'"
   ></app-freight-detail>
 
   <app-freight-detail
-    label="Delivery Agent"
-    value="HARPER JAPAN INC.
-    SHIN NIHONBASHI BUILD 6F 8-2
-    NIHONBASHI 4 CHOME
-    CHUO-KU, TOKYO 103-0027, JAPAN
-    TEL 03-3399-9863  FAX: 03-3399-9776"
+    label="Forwarding Agent"
+    [value]="forwardingAgentText"
   ></app-freight-detail>
 
   <div class="px-3 py-2 text-center text-sm font-bold text-gray-600 border-t border-dashed border-slate-300">
-    As Agent for the Carrier HPS Container Lines
+    @if (hbl?.carrier?.name) {
+      As Agent for the Carrier {{ hbl?.carrier?.name }}
+    } @else {
+      As Agent for the Carrier
+    }
   </div>
 
   <app-freight-verification></app-freight-verification>

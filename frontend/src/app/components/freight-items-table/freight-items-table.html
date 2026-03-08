@@ -22,32 +22,43 @@
       </thead>
 
       <tbody class="align-top text-[0.75rem] leading-5">
-        <tr class="min-h-[380px]">
-          <td class="border-r border-slate-300 px-6 py-6">
-            <p>Case Mark</p>
-            <p>KOBE/JAPAN</p>
-            <p>3,500 CARTONS</p>
-          </td>
-          <td class="border-r border-slate-300 px-6 py-6 text-center font-semibold">
-            <p>3,500 CARTONS</p>
-          </td>
-          <td class="border-r border-slate-300 px-6 py-6">
-            <p>1 x 40HQ SAID TO CONTAIN</p>
-            <p>BODY SOAP F 800ml</p>
-            <p>BODY SOAP U 800ml</p>
-            <p>HS CODE: 3307.30.00</p>
-            <p class="mt-4 font-bold">Invoice No: BNP18954</p>
-            <p>Date: 21st Feb 2026</p>
-            <p class="mt-4 font-semibold">" SHIPPER LOAD &amp; COUNT"</p>
-          </td>
-          <td class="border-r border-slate-300 px-4 py-6 text-center">
-            <p>N.W 14,390kg</p>
-            <p>G.W. 14,510kg</p>
-          </td>
-          <td class="px-4 py-6 text-center">
-            <p>25.40CBM</p>
-          </td>
-        </tr>
+        @for (c of hbl?.container_details ?? []; track $index) {
+          <tr class="min-h-[120px]">
+            <td class="border-r border-slate-300 px-6 py-6 whitespace-pre-line">{{ c.marks_and_numbers ?? '—' }}</td>
+            <td class="border-r border-slate-300 px-6 py-6 text-center font-semibold">
+              {{ c.package_count != null ? c.package_count : '—' }}{{ c.package_type ? ' ' + c.package_type : '' }}
+            </td>
+            <td class="border-r border-slate-300 px-6 py-6">
+              {{ c.description_of_goods ?? '—' }}
+              @if (c.hs_code) {
+                <p class="mt-1">HS CODE: {{ c.hs_code }}</p>
+              }
+            </td>
+            <td class="border-r border-slate-300 px-4 py-6 text-center">
+              @if (c.net_weight?.value != null) {
+                <p>N.W {{ c.net_weight?.value }}{{ c.net_weight?.unit != null ? ' ' + (c.net_weight?.unit ?? '') : '' }}</p>
+              }
+              @if (c.gross_weight?.value != null) {
+                <p>G.W. {{ c.gross_weight?.value }}{{ c.gross_weight?.unit != null ? ' ' + (c.gross_weight?.unit ?? '') : '' }}</p>
+              }
+              @if ((c.net_weight?.value == null) && (c.gross_weight?.value == null)) { — }
+            </td>
+            <td class="px-4 py-6 text-center">
+              @if (c.measurement?.value != null) {
+                {{ c.measurement?.value }}{{ c.measurement?.unit ?? 'CBM' }}
+              } @else { — }
+            </td>
+          </tr>
+        }
+        @if (!hbl?.container_details?.length) {
+          <tr class="min-h-[120px]">
+            <td class="border-r border-slate-300 px-6 py-6">—</td>
+            <td class="border-r border-slate-300 px-6 py-6 text-center">—</td>
+            <td class="border-r border-slate-300 px-6 py-6">—</td>
+            <td class="border-r border-slate-300 px-4 py-6 text-center">—</td>
+            <td class="px-4 py-6 text-center">—</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

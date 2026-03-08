@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { HblItem } from '../../models/generate-payload';
 
 @Component({
   selector: 'app-freight-header',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './freight-header.html',
   styleUrl: './freight-header.css',
 })
-export class FreightHeader {}
+export class FreightHeader {
+  @Input() hbl: HblItem | null = null;
+}

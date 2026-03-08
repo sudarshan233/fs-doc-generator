@@ -1,37 +1,55 @@
 <div class="flex flex-col p-4">
-    <section class="grid w-full grid-cols-2 border border-slate-300">
-        <div class="col-span-1 flex flex-col border-r border-slate-300">
-            <!-- Freight Parties -->
-            <app-freight-parties 
-            class="border-b border-slate-300
-            py-4 px-4"></app-freight-parties>
-            <app-freight-parties 
-            class="border-b border-slate-300
-            py-4 px-4"></app-freight-parties>
-            <app-freight-parties 
-            class="py-4 px-4"></app-freight-parties>
-        </div>
-        <div class="col-span-1">
+  @if (payloadService.payload(); as payload) {
+    @if (payload.mbl_number != null || payload.total_count != null) {
+      <div class="mb-4 text-sm text-gray-600">
+        @if (payload.mbl_number) {
+          <span class="font-semibold">MBL: {{ payload.mbl_number }}</span>
+        }
+        @if (payload.total_count != null) {
+          <span class="ml-4">Total HBLs: {{ payload.total_count }}</span>
+        }
+      </div>
+    }
+    @for (hbl of payload.hbl_list ?? []; track hbl.sea_waybill_no ?? $index) {
+      <section class="border-b border-slate-400 pb-8 mb-8">
+        <section class="grid w-full grid-cols-2 border border-slate-300">
+          <div class="col-span-1 flex flex-col border-r border-slate-300">
+            <app-freight-parties
+              label="Shipper:"
+              [party]="hbl.shipper ?? null"
+              class="border-b border-slate-300 py-4 px-4"></app-freight-parties>
+            <app-freight-parties
+              label="Consignee:"
+              [party]="hbl.consignee ?? null"
+              class="border-b border-slate-300 py-4 px-4"></app-freight-parties>
+            <app-freight-parties
+              label="Notify party:"
+              [party]="hbl.notify_party ?? null"
+              class="py-4 px-4"></app-freight-parties>
+          </div>
+          <div class="col-span-1">
+            <app-freight-header [hbl]="hbl"></app-freight-header>
+          </div>
+        </section>
 
-            <!-- Freight Header Details -->
-            <app-freight-header></app-freight-header>
-        </div>
-    </section>
+        <app-freight-items-table [hbl]="hbl"></app-freight-items-table>
 
-    <!-- Freight Items Table -->
-    <app-freight-items-table></app-freight-items-table>
-    
-    <!-- Freight Charges Table -->
-    <app-freight-charges-table class="mt-6 force-page-break"></app-freight-charges-table>
+        <app-freight-charges-table [hbl]="hbl" class="mt-6 force-page-break"></app-freight-charges-table>
 
-    <section class="grid w-full h-full grid-cols-2 border-b border-slate-300">
-        <div class="col-span-1 flex flex-col">
-            <!-- Freight Metadata -->
-             <app-freight-metadata class="mt-6"></app-freight-metadata>
-        </div>
-        <div class="col-span-1 flex flex-col">
-            <!-- Freight Updates -->
-            <app-freight-updates class="mt-6 flex-1"></app-freight-updates>
-        </div>
-    </section>
+        <section class="grid w-full h-full grid-cols-2 border-b border-slate-300">
+          <div class="col-span-1 flex flex-col">
+            <app-freight-metadata [hbl]="hbl" class="mt-6"></app-freight-metadata>
+          </div>
+          <div class="col-span-1 flex flex-col">
+            <app-freight-updates [hbl]="hbl" class="mt-6 flex-1"></app-freight-updates>
+          </div>
+        </section>
+      </section>
+    }
+    @if (!payload.hbl_list?.length) {
+      <p class="text-gray-500">No HBL documents in payload.</p>
+    }
+  } @else {
+    <p class="text-gray-500">Load payload by calling POST /api/v1/generate, then refresh or open this app.</p>
+  }
 </div>
