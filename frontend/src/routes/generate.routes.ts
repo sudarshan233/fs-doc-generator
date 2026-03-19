@@ -1,10 +1,8 @@
 import express from "express";
-import { generateDoc, getLastPayload, savePdfDocument } from "../controllers/generate.controller";
+import { generatePdf } from "../controllers/generate.controller";
 
 const router = express.Router();
 
-router.post("/generate", generateDoc);
-router.get("/last-payload", getLastPayload);
-router.post("/documents", express.raw({ type: 'application/pdf', limit: '50mb' }), savePdfDocument);
+router.post("/generate", generatePdf);
 
 export default router;

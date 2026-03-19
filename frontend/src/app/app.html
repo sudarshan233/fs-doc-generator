@@ -8,27 +8,10 @@
         @if (payload.total_count != null) {
           <span class="ml-4">Total HBLs: {{ payload.total_count }}</span>
         }
-        <span class="ml-4">Rendered documents: {{ renderedDocumentCount }}</span>
       </div>
-      <button
-        type="button"
-        class="rounded border border-slate-400 px-3 py-1 text-slate-700 transition hover:bg-slate-100"
-        (click)="exportDocuments(payload)">
-        Generate PDFs
-      </button>
     </div>
-
-    @if (exportState() === 'exporting') {
-      <p class="mb-4 text-sm text-slate-500">Rendering PDFs and saving them to the output folder...</p>
-    } @else if (exportState() === 'done') {
-      <p class="mb-4 text-sm text-emerald-700">
-        Saved {{ exportedFiles().length }} PDF{{ exportedFiles().length === 1 ? '' : 's' }} in the output folder.
-      </p>
-    } @else if (exportState() === 'error') {
-      <p class="mb-4 text-sm text-red-600">PDF export failed. Check the console for the exact error.</p>
-    }
     @for (hbl of payload.hbl_list ?? []; track hbl.sea_waybill_no ?? $index) {
-      <section #documentCard class="mb-8 border-b border-slate-400 pb-8">
+      <section class="mb-8 border-b border-slate-400 pb-8">
         <section class="grid w-full grid-cols-2 border border-slate-300">
           <div class="col-span-1 flex flex-col border-r border-slate-300">
             <app-freight-parties
@@ -67,6 +50,6 @@
       <p class="text-gray-500">No HBL documents in payload.</p>
     }
   } @else {
-    <p class="text-gray-500">Load payload by calling POST /api/v1/generate, then refresh or open this app.</p>
+    <p class="text-gray-500">POST /api/v1/generate to render and save PDFs from the request payload.</p>
   }
 </div>

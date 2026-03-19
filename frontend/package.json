@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "npm run dev",
     "dev": "ng serve --configuration development",
+    "build:pdf-css": "tailwindcss -i ./src/styles.css -o ./src/server/pdf-base.css --minify",
+    "prebuild": "npm run build:pdf-css",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
