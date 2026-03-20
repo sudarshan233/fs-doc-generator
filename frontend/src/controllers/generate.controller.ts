@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { GeneratePayload } from '../app/models/generate-payload';
 import { generatePdfDocuments } from '../server/pdf-generation.service';
+import { uploadPdfToCloudinary } from '../server/cloudinary.service';
 
 export const generatePdf = async (req: Request, res: Response): Promise<Response | void> => {
   const payload = req.body as GeneratePayload | undefined;
@@ -15,14 +16,17 @@ export const generatePdf = async (req: Request, res: Response): Promise<Response
 
   try {
     const { files } = await generatePdfDocuments(payload);
-    const [firstFile] = files;
+    await Promise.all(
+      files.map(async (file) => {
+        await uploadPdfToCloudinary(file.relativePath);
+      }),
+    );
 
     return res.status(201).json({
       success: true,
-      fileName: firstFile?.fileName ?? '',
-      relativePath: firstFile?.relativePath ?? '',
-      files,
+      message: 'PDFs generated successfully',
     });
+
   } catch (error) {
     console.error('Failed to generate PDFs', error);
 
