@@ -16,15 +16,20 @@ export const generatePdf = async (req: Request, res: Response): Promise<Response
 
   try {
     const { files } = await generatePdfDocuments(payload);
-    await Promise.all(
+    const uploadedFiles = await Promise.all(
       files.map(async (file) => {
-        await uploadPdfToCloudinary(file.relativePath);
+        const url = await uploadPdfToCloudinary(file.relativePath);
+        return {
+          filename: file.fileName,
+          url,
+        };
       }),
     );
 
     return res.status(201).json({
       success: true,
       message: 'PDFs generated successfully',
+      uploadedFiles,
     });
 
   } catch (error) {
