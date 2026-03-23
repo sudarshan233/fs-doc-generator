@@ -32,10 +32,13 @@ export const uploadPdfToCloudinary = async (pdfPath: string): Promise<string> =>
   });
 
   const pdf = await cloudinary.uploader.upload(pdfPath, {
+    resource_type: "raw",
+    type: "upload",
+    flags: 'attachment',
     folder: 'output',
     use_filename: true,
     unique_filename: true,
   });
 
-  return pdf.secure_url ?? pdf.url;
+  return pdf.secure_url;
 };
