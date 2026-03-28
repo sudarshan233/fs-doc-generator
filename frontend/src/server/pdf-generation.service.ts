@@ -46,7 +46,8 @@ type BrowserLike = {
 
 type PlaywrightModule = {
   chromium: {
-    launch: (options: { headless: boolean; executablePath: string }) => Promise<BrowserLike>;
+    executablePath: () => string;
+    launch: (options: { headless: boolean; executablePath?: string }) => Promise<BrowserLike>;
   };
 };
 
@@ -199,26 +200,63 @@ const buildFileName = (
   return `${masterBill}-${String(index + 1).padStart(2, '0')}-${documentLabel}-${timestamp}.pdf`;
 };
 
-const resolveBrowserExecutablePath = async (): Promise<string> => {
+const canAccessPath = async (targetPath: string): Promise<boolean> => {
+  try {
+    await access(targetPath);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const collectSystemBrowserCandidates = (): string[] => {
+  const candidates = new Set<string>();
+  const push = (value: string | undefined): void => {
+    if (value) {
+      candidates.add(value);
+    }
+  };
+
+  if (process.platform === 'win32') {
+    const programFiles = process.env['PROGRAMFILES'];
+    const programFilesX86 = process.env['PROGRAMFILES(X86)'];
+    const localAppData = process.env['LOCALAPPDATA'];
+
+    push(programFiles ? join(programFiles, 'Google', 'Chrome', 'Application', 'chrome.exe') : undefined);
+    push(programFilesX86 ? join(programFilesX86, 'Google', 'Chrome', 'Application', 'chrome.exe') : undefined);
+    push(localAppData ? join(localAppData, 'Google', 'Chrome', 'Application', 'chrome.exe') : undefined);
+    push(programFiles ? join(programFiles, 'Microsoft', 'Edge', 'Application', 'msedge.exe') : undefined);
+    push(programFilesX86 ? join(programFilesX86, 'Microsoft', 'Edge', 'Application', 'msedge.exe') : undefined);
+    push(localAppData ? join(localAppData, 'Microsoft', 'Edge', 'Application', 'msedge.exe') : undefined);
+  } else if (process.platform === 'darwin') {
+    push('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
+    push('/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge');
+  } else {
+    push('/usr/bin/google-chrome');
+    push('/usr/bin/google-chrome-stable');
+    push('/usr/bin/chromium-browser');
+    push('/usr/bin/chromium');
+    push('/usr/bin/microsoft-edge');
+  }
+
+  return [...candidates];
+};
+
+const resolveBrowserExecutablePath = async (chromium: PlaywrightModule['chromium']): Promise<string> => {
   const candidates = [
     process.env['PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH'],
-    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-    'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
-    'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+    chromium.executablePath(),
+    ...collectSystemBrowserCandidates(),
   ].filter((value): value is string => Boolean(value));
 
   for (const executablePath of candidates) {
-    try {
-      await access(executablePath);
+    if (await canAccessPath(executablePath)) {
       return executablePath;
-    } catch {
-      // Try the next candidate.
     }
   }
 
   throw new Error(
-    'No Chrome or Edge executable was found. Set PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH or install a supported browser.',
+    'No Chromium browser executable was found. Install Playwright Chromium with "npx playwright install chromium", install Chrome or Edge, or set PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH.',
   );
 };
 
@@ -279,7 +317,7 @@ export const generatePdfDocuments = async (payload: GeneratePayload): Promise<Ge
   }
 
   const { chromium } = await loadPlaywright();
-  const executablePath = await resolveBrowserExecutablePath();
+  const executablePath = await resolveBrowserExecutablePath(chromium);
   const browser = await chromium.launch({
     headless: true,
     executablePath,
