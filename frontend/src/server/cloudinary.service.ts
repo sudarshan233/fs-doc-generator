@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { join } from 'node:path';
 
-dotenv.config({ path: join(process.cwd(), 'src', '.env') });
+dotenv.config({ path: join(process.cwd(), '.env') });
 
 type CloudinaryConfig = {
   cloud_name: string;
@@ -16,7 +16,7 @@ const getCloudinaryConfig = (): CloudinaryConfig => {
 
   if (!cloud_name || !api_key || !api_secret) {
     throw new Error(
-      'Missing Cloudinary credentials. Make sure CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET are defined in src/.env.',
+      'Missing Cloudinary credentials. Make sure CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET are defined in .env.',
     );
   }
 
