@@ -1,0 +1,10 @@
+.border-thin {
+  border-width: 1px;
+  border-color: #cbd5e1; /* slate-300 */
+}
+
+.table-header {
+  font-size: 10px;
+  color: #475569; /* slate-600 */
+  font-weight: 500;
+}
