@@ -9,6 +9,9 @@ import { App } from '../app/app';
 import { config as serverAppConfig } from '../app/app.config.server';
 import { GeneratePayload, HblItem } from '../app/models/generate-payload';
 import { GeneratePayloadService } from '../app/services/generate-payload.service';
+import { TemplateApp } from '../app/template-app';
+import { TemplatePayload } from '../app/models/template-payload';
+import { TemplatePayloadService } from '../app/services/template-payload.service';
 
 export interface GeneratedPdfFile {
   fileName: string;
@@ -337,6 +340,69 @@ export const generatePdfDocuments = async (payload: GeneratePayload): Promise<Ge
     }
 
     return { files };
+  } finally {
+    await browser.close();
+  }
+};
+
+const buildTemplateFileName = (payload: TemplatePayload): string => {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  return `${sanitizeFileName(payload.filename)}-${timestamp}.pdf`;
+};
+
+const renderTemplateHtmlContent = async (payload: TemplatePayload): Promise<string> => {
+  const styles = await getCompiledStyles();
+  const payloadService = new TemplatePayloadService();
+  payloadService.setPayload(payload);
+  
+  const document = buildDocumentShell(styles).replace('<app-root></app-root>', '<app-template-root></app-template-root>');
+  const serverConfigWithPayload = mergeApplicationConfig(serverAppConfig, {
+    providers: [{ provide: TemplatePayloadService, useValue: payloadService }],
+  });
+
+  const rendered = await renderApplication(
+    (context) => bootstrapApplication(TemplateApp, serverConfigWithPayload, context),
+    { document },
+  );
+
+  return inlineAssets(rendered);
+};
+
+export const generateDocFromTemplate = async (payload: TemplatePayload): Promise<GeneratedPdfFile> => {
+  if (!payload || !payload.template_type) {
+    throw new Error('Template payload missing required fields');
+  }
+
+  const { chromium } = await loadPlaywright();
+  const executablePath = await resolveBrowserExecutablePath(chromium);
+  const browser = await chromium.launch({
+    headless: true,
+    executablePath,
+  });
+
+  try {
+    const page = await browser.newPage();
+    try {
+      const renderedHtml = await renderTemplateHtmlContent(payload);
+      const filePath = await getUniquePdfPath(buildTemplateFileName(payload));
+
+      await page.setContent(renderedHtml, { waitUntil: 'load' });
+      await page.emulateMedia({ media: 'screen' });
+      await page.pdf({
+        path: filePath,
+        format: 'A4',
+        printBackground: true,
+        preferCSSPageSize: true,
+        margin: { top: '0', right: '0', bottom: '0', left: '0' },
+      });
+
+      return {
+        fileName: basename(filePath),
+        relativePath: `output/${basename(filePath)}`,
+      };
+    } finally {
+      await page.close();
+    }
   } finally {
     await browser.close();
   }

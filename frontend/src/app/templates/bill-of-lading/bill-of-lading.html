@@ -1,0 +1,200 @@
+<div class="w-full text-[11px] text-slate-800 leading-tight">
+  <!-- Title -->
+  <div class="text-center mb-4">
+    <h1 class="text-2xl font-bold tracking-widest text-black">BILL OF LADING</h1>
+    <div class="mt-1 border-b border-dashed border-slate-400 w-64 mx-auto"></div>
+  </div>
+
+  <div class="grid grid-cols-2 border-t border-l border-r border-slate-300">
+    <!-- Left Column -->
+    <div class="col-span-1 border-r border-slate-300 flex flex-col">
+      <!-- Shipper -->
+      <div class="p-2 min-h-[140px] border-b border-slate-300">
+        <div class="table-header mb-1">Shipper</div>
+        <div class="font-semibold">{{ data['shipper'] || '' }}</div>
+      </div>
+      <!-- Consignee -->
+      <div class="p-2 min-h-[140px] border-b border-slate-300">
+        <div class="table-header mb-1">Consignee</div>
+        <div class="font-semibold">{{ data['consignee'] || '' }}</div>
+      </div>
+      <!-- Notify Party -->
+      <div class="p-2 min-h-[140px]">
+        <div class="table-header mb-1">Notify Party (If not Consignee)</div>
+        <div class="font-semibold">{{ data['notify_party'] || '' }}</div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-span-1 flex flex-col">
+      <!-- Top Refs -->
+      <div class="grid grid-cols-2 border-b border-slate-300">
+        <div class="p-2 border-r border-slate-300 min-h-[70px]">
+          <div class="table-header mb-1">Shipper's Reference</div>
+          <div class="font-semibold bg-slate-50 p-1">{{ data['shipper_reference'] || '' }}</div>
+        </div>
+        <div class="p-2 min-h-[70px]">
+          <div class="table-header mb-1">Bill of Lading Number</div>
+          <div class="font-semibold bg-slate-50 p-1">{{ data['bill_of_lading_number'] || '' }}</div>
+        </div>
+      </div>
+
+      <!-- Carrier Refs -->
+      <div class="p-2 border-b border-slate-300 min-h-[70px]">
+        <div class="table-header mb-1">Carrier's Reference</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['carrier_reference'] || '' }}</div>
+      </div>
+
+      <!-- Consignment Ref -->
+      <div class="p-2 border-b border-slate-300 min-h-[70px]">
+        <div class="table-header mb-1">Unique Consignment Reference</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['unique_consignment_reference'] || '' }}</div>
+      </div>
+
+      <!-- Carrier Name -->
+      <div class="p-2 border-b border-slate-300 min-h-[70px]">
+        <div class="table-header mb-1">Carrier Name</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['carrier_name'] || '' }}</div>
+      </div>
+
+      <!-- Additional Notify Party -->
+      <div class="p-2 min-h-[140px]">
+        <div class="table-header mb-1">Additional Notify Party</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['additional_notify_party'] || '' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Routing Information Box -->
+  <div class="grid grid-cols-2 border border-slate-300 border-t-0">
+    <div class="col-span-1 grid grid-cols-2">
+      <div class="p-2 border-r border-b border-slate-300 min-h-[50px]">
+        <div class="table-header mb-1">Pre-Carriage By</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['pre_carriage_by'] || '' }}</div>
+      </div>
+      <div class="p-2 border-b border-slate-300 min-h-[50px]">
+        <div class="table-header mb-1">Place of Receipt</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['place_of_receipt'] || '' }}</div>
+      </div>
+      
+      <div class="p-2 border-r border-b border-slate-300 min-h-[50px]">
+        <div class="table-header mb-1">Vessel / Aircraft</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['vessel_aircraft'] || '' }}</div>
+      </div>
+      
+      <div class="p-2 border-b border-slate-300 min-h-[50px]">
+         <div class="table-header mb-1">Port of Loading</div>
+         <div class="font-semibold bg-slate-50 p-1">{{ data['port_of_loading'] || '' }}</div>
+      </div>
+
+      <div class="col-span-2 grid grid-cols-2">
+        <div class="p-2 border-r border-slate-300 min-h-[50px]">
+          <div class="table-header mb-1">Port of Discharge</div>
+          <div class="font-semibold bg-slate-50 p-1">{{ data['port_of_discharge'] || '' }}</div>
+        </div>
+        <div class="p-2 min-h-[50px]">
+          <div class="table-header mb-1">Place of Delivery</div>
+          <div class="font-semibold bg-slate-50 p-1">{{ data['place_of_delivery'] || '' }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-1 flex flex-col">
+      <div class="p-2 border-b border-l border-slate-300 flex-grow min-h-[100px]">
+        <div class="table-header mb-1">Additional Information</div>
+        <div class="font-semibold bg-slate-50 p-1 h-full">{{ data['additional_information'] || '' }}</div>
+      </div>
+      <div class="p-2 border-l border-slate-300 min-h-[50px]">
+        <div class="table-header mb-1">Final Destination</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['final_destination'] || '' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goods Table -->
+  <div class="border border-slate-300 border-t-0 table w-full table-fixed min-h-[250px]">
+    <div class="table-header-group">
+      <div class="table-row border-b border-slate-300 bg-slate-50">
+        <div class="table-cell p-2 border-r border-slate-300 w-2/12">Marks & Numbers</div>
+        <div class="table-cell p-2 border-r border-slate-300 w-2/12">Kind & No of Packages</div>
+        <div class="table-cell p-2 border-r border-slate-300 w-4/12">Description of Goods</div>
+        <div class="table-cell p-2 border-r border-slate-300 w-1/12 text-center">Net Wt (Kg)</div>
+        <div class="table-cell p-2 border-r border-slate-300 w-1/12 text-center">Gross Wt (Kg)</div>
+        <div class="table-cell p-2 w-[12%] text-center">Measurement (m³)</div>
+      </div>
+    </div>
+    <div class="table-row-group">
+      <div class="table-row">
+        <div class="table-cell p-2 border-r border-slate-300 align-top">{{ data['marks_and_numbers'] || '' }}</div>
+        <div class="table-cell p-2 border-r border-slate-300 align-top">{{ data['kind_and_no_of_packages'] || '' }}</div>
+        <div class="table-cell p-2 border-r border-slate-300 align-top">{{ data['description_of_goods'] || '' }}</div>
+        <div class="table-cell p-2 border-r border-slate-300 text-center align-top">{{ data['net_weight'] || '' }}</div>
+        <div class="table-cell p-2 border-r border-slate-300 text-center align-top">{{ data['gross_weight'] || '' }}</div>
+        <div class="table-cell p-2 text-center align-top">{{ data['measurements'] || '' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional fields row -->
+  <div class="border border-slate-300 border-t-0 p-2 bg-slate-50 flex items-center gap-2">
+    <div class="table-header">Total No of Containers or other packages or units (in words)</div>
+    <div class="font-semibold flex-1">{{ data['total_no_of_containers'] || '' }}</div>
+  </div>
+
+  <div class="grid grid-cols-5 border border-slate-300 border-t-0">
+    <div class="p-2 border-r border-slate-300 min-h-[50px]">
+      <div class="table-header mb-1">No. of original Bills of Lading</div>
+      <div class="font-semibold bg-slate-50 p-1">{{ data['no_of_original_bills'] || '' }}</div>
+    </div>
+    <div class="p-2 border-r border-slate-300 min-h-[50px]">
+      <div class="table-header mb-1">Incoterms</div>
+      <div class="font-semibold bg-slate-50 p-1">{{ data['incoterms'] || '' }}</div>
+    </div>
+    <div class="p-2 border-r border-slate-300 min-h-[50px]">
+      <div class="table-header mb-1">Payable at</div>
+      <div class="font-semibold bg-slate-50 p-1">{{ data['payable_at'] || '' }}</div>
+    </div>
+    <div class="p-2 border-r border-slate-300 min-h-[50px]">
+      <div class="table-header mb-1">Freight Charges</div>
+      <div class="font-semibold bg-slate-50 p-1">{{ data['freight_charges'] || '' }}</div>
+    </div>
+    <div class="p-2 min-h-[50px]">
+      <div class="table-header mb-1">Shipped on Board Date</div>
+      <div class="font-semibold bg-slate-50 p-1">{{ data['shipped_on_board_date'] || '' }}</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="grid grid-cols-2 border border-slate-300 border-t-0 min-h-[250px]">
+    <!-- Terms -->
+    <div class="col-span-1 border-r border-slate-300 p-2">
+      <div class="table-header mb-1">Terms and Conditions</div>
+      <div class="text-[9px] text-slate-500 text-justify">
+        RECEIVED by the Carrier the Goods as specified above in apparent good order and condition unless otherwise stated, to be transported to such place as agreed, authorized or permitted herein and subject to all the terms and conditions appearing on the front and reverse of this Bill of Lading to which the Merchant agrees by accepting this Bill of Lading, any local privileges and customs notwithstanding.
+      </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="col-span-1 flex flex-col">
+      <div class="p-2 border-b border-slate-300">
+        <div class="table-header mb-1">Place and Date of Issue</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['place_and_date_of_issue'] || '' }}</div>
+      </div>
+      <div class="p-2 border-b border-slate-300">
+        <div class="table-header mb-1">Signatory Company</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['signatory_company'] || '' }}</div>
+      </div>
+      <div class="p-2 border-b border-slate-300">
+        <div class="table-header mb-1">Name of Authorized Signatory</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['name_of_authorized_signatory'] || '' }}</div>
+      </div>
+      <div class="p-2 flex-grow flex flex-col relative bg-slate-50">
+        <div class="table-header mb-1 z-10 relative">Signature</div>
+        <div class="flex items-center justify-center m-auto text-blue-600">
+          <span class="italic text-lg">Signed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
