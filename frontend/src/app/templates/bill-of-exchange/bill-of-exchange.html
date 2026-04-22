@@ -1,0 +1,115 @@
+<div class="w-full text-[11px] text-slate-800 leading-tight">
+  <!-- Title -->
+  <div class="text-center mb-6">
+    <h1 class="text-2xl font-bold tracking-widest text-black">BILL OF EXCHANGE</h1>
+  </div>
+
+  <div class="border border-slate-300">
+    <!-- Row 1 -->
+    <div class="grid grid-cols-2 border-b border-slate-300">
+      <div class="p-3 border-r border-slate-300 min-h-[70px]">
+        <div class="table-header mb-1 text-blue-800">Reference No.</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['reference_no'] || '' }}</div>
+      </div>
+      <div class="p-3 min-h-[70px]">
+        <div class="table-header mb-1 text-blue-800">Amount in figures</div>
+        <div class="font-semibold bg-slate-50 p-1 text-right">{{ data['amount_in_figures'] || '0.00' }}</div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="grid grid-cols-2 border-b border-slate-300">
+      <div class="p-3 border-r border-slate-300 min-h-[70px]">
+        <div class="table-header mb-1 text-blue-800">B/L Date (if applicable)</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['bl_date'] || '' }}</div>
+      </div>
+      <div class="grid grid-cols-2">
+         <div class="p-3 border-r border-slate-300 min-h-[70px]">
+           <div class="table-header mb-1 text-blue-800">Place of issue</div>
+           <div class="font-semibold bg-slate-50 p-1">{{ data['place_of_issue'] || '' }}</div>
+         </div>
+         <div class="p-3 min-h-[70px]">
+           <div class="table-header mb-1 text-blue-800">Date of issue</div>
+           <div class="font-semibold bg-slate-50 p-1">{{ data['date_of_issue'] || '' }}</div>
+         </div>
+      </div>
+    </div>
+
+    <!-- Row 3: At -->
+    <div class="p-3 border-b border-slate-300 min-h-[70px]">
+      <div class="table-header mb-1 text-blue-800">At</div>
+      <div class="font-semibold bg-slate-50 p-1">{{ data['at'] || '' }}</div>
+    </div>
+
+    <!-- Row 4: Pay to the order of -->
+    <div class="p-3 border-b border-slate-300 min-h-[90px]">
+      <div class="table-header mb-1 text-blue-800">Pay to the order of</div>
+      <div class="font-semibold bg-slate-50 p-1 min-h-[40px]">{{ data['pay_to_the_order_of'] || '' }}</div>
+    </div>
+
+    <!-- Row 5: The sum of -->
+    <div class="p-3 border-b border-slate-300 min-h-[70px]">
+      <div class="table-header mb-1 text-blue-800">The sum of (amount in words)</div>
+      <div class="font-semibold bg-slate-50 p-1">{{ data['amount_in_words'] || '' }}</div>
+    </div>
+
+    <!-- Row 6: Drawn under & Dated -->
+    <div class="grid grid-cols-2 border-b border-slate-300">
+      <div class="p-3 border-r border-slate-300 min-h-[70px]">
+        <div class="table-header mb-1 text-blue-800">Drawn under</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['drawn_under'] || '' }}</div>
+      </div>
+      <div class="p-3 min-h-[70px]">
+        <div class="table-header mb-1 text-blue-800">Dated</div>
+        <div class="font-semibold bg-slate-50 p-1">{{ data['dated'] || '' }}</div>
+      </div>
+    </div>
+
+    <!-- Row 7: Issued by -->
+    <div class="p-3 border-b border-slate-300 min-h-[90px]">
+      <div class="table-header mb-1 text-blue-800">Issued by</div>
+      <div class="font-semibold bg-slate-50 p-1 min-h-[40px]">{{ data['issued_by'] || '' }}</div>
+    </div>
+
+    <!-- Row 8: Signatures Box -->
+    <div class="grid grid-cols-2">
+      <!-- Drawee Box -->
+      <div class="p-3 border-r border-slate-300 flex flex-col justify-between min-h-[220px]">
+         <div>
+            <div class="table-header mb-1 text-blue-800">Signed for and on behalf of Drawee</div>
+            <div class="font-semibold bg-slate-50 p-1 mb-6 min-h-[40px]">{{ data['drawee'] || '' }}</div>
+         </div>
+         <div>
+            <div class="table-header mb-1 text-blue-800">Name of authorized signatory</div>
+            <div class="flex gap-2 mb-4">
+               <div class="font-semibold bg-slate-50 p-1 w-1/2">{{ data['drawee_first_name'] || '' }}</div>
+               <div class="font-semibold bg-slate-50 p-1 w-1/2">{{ data['drawee_last_name'] || '' }}</div>
+            </div>
+            <div class="table-header mb-1 text-blue-800">Signature</div>
+            <div class="bg-blue-50/50 flex items-center justify-center m-auto rounded-lg px-8 py-6">
+              <span class="italic text-blue-600">Click here to sign</span>
+            </div>
+         </div>
+      </div>
+      
+      <!-- Drawer Box -->
+      <div class="p-3 flex flex-col justify-between min-h-[220px]">
+         <div>
+            <div class="table-header mb-1 text-blue-800">Signed for and on behalf of Drawer</div>
+            <div class="font-semibold bg-slate-50 p-1 mb-6 min-h-[40px]">{{ data['drawer'] || '' }}</div>
+         </div>
+         <div>
+            <div class="table-header mb-1 text-blue-800">Name of authorized signatory</div>
+            <div class="flex gap-2 mb-4">
+               <div class="font-semibold bg-slate-50 p-1 w-1/2">{{ data['drawer_first_name'] || '' }}</div>
+               <div class="font-semibold bg-slate-50 p-1 w-1/2">{{ data['drawer_last_name'] || '' }}</div>
+            </div>
+            <div class="table-header mb-1 text-blue-800">Signature</div>
+            <div class="bg-blue-50/50 flex items-center justify-center m-auto rounded-lg px-8 py-6">
+              <span class="italic text-blue-600">Click here to sign</span>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
