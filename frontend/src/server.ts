@@ -39,6 +39,16 @@ app.use(
   }),
 );
 
+/**
+ * Health check endpoint (supports GET and HEAD methods)
+ */
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+app.head('/health', (req, res) => {
+  res.status(200).end();
+});
+
 app.use('/api/v1', router);
 
 /**
