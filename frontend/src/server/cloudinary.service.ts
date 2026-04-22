@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { join } from 'node:path';
+import { v2 as cloudinary } from 'cloudinary';
 
 dotenv.config({ path: join(process.cwd(), '.env') });
 
@@ -24,7 +25,6 @@ const getCloudinaryConfig = (): CloudinaryConfig => {
 };
 
 export const uploadPdfToCloudinary = async (pdfPath: string): Promise<string> => {
-  const { v2: cloudinary } = await import('cloudinary');
 
   cloudinary.config({
     ...getCloudinaryConfig(),
