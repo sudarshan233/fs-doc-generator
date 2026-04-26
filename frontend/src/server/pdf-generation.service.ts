@@ -194,13 +194,11 @@ const buildFileName = (
   hbl: NonNullable<GeneratePayload['hbl_list']>[number],
   index: number,
 ): string => {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const documentLabel = sanitizeFileName(
     hbl.sea_waybill_no ?? hbl.carrier_reference ?? hbl.export_reference ?? `document-${index + 1}`,
   );
-  const masterBill = sanitizeFileName(payload.mbl_number ?? 'mbl');
 
-  return `${masterBill}-${String(index + 1).padStart(2, '0')}-${documentLabel}-${timestamp}.pdf`;
+  return `${documentLabel}.pdf`;
 };
 
 const canAccessPath = async (targetPath: string): Promise<boolean> => {
@@ -346,8 +344,7 @@ export const generatePdfDocuments = async (payload: GeneratePayload): Promise<Ge
 };
 
 const buildTemplateFileName = (payload: TemplatePayload): string => {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  return `${sanitizeFileName(payload.filename)}-${timestamp}.pdf`;
+  return `${sanitizeFileName(payload.filename)}.pdf`;
 };
 
 const renderTemplateHtmlContent = async (payload: TemplatePayload): Promise<string> => {
